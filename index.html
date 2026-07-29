@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIMMY | Portfolio</title>
+    
+    <!-- High-priority Preload for Background Image -->
+    <link rel="preload" as="image" href="https://i.postimg.cc/hvqkntYJ/Whats-App-Image-2026-07-27-at-11-28-56.jpg" fetchpriority="high">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Arrow Cursor matching #ffccfd / #00663a theme */
+        * {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="%23ffccfd" stroke="%2300663a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7 18 3-7 7-3L3 3z"/></svg>'), auto !important;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #00663a;
+            color: #ffccfd;
+            position: relative;
+        }
+
+        /* Background image overlay tuned for 25% opacity across all pages */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -10;
+            opacity: 0.25;
+            background-image: url('https://i.postimg.cc/hvqkntYJ/Whats-App-Image-2026-07-27-at-11-28-56.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            pointer-events: none;
+        }
+
+        .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Override font to Arial for all pages and components except Home page */
+        #page-about, #page-about *,
+        #page-work, #page-work *,
+        #page-contact, #page-contact *,
+        footer, footer *,
+        [id^="designPoster"], [id^="designPoster"] *,
+        #toast, #toast * {
+            font-family: Arial, Helvetica, sans-serif !important;
+        }
+
+        /* Glassmorphism styling tuned for #00663a & #ffccfd */
+        .glass-card {
+            background: rgba(0, 60, 34, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 204, 253, 0.3);
+        }
+
+        .glass-nav {
+            background: rgba(0, 75, 43, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 204, 253, 0.35);
+        }
+
+        /* Hover Dropdown Animation */
+        .dropdown-menu {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: top center;
+        }
+
+        /* Active / Hover state for dropdown menu */
+        .trigger-zone:hover .dropdown-menu,
+        .trigger-zone.is-open .dropdown-menu,
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        /* Chevron rotation when dropdown is open */
+        .trigger-zone.is-open .chevron-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Smooth page fade transition */
+        .page-view {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* CD / Jewel Case Dock Gallery Styling */
+        .cd-dock-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 2.5rem 1rem;
+            min-height: 440px;
+        }
+
+        .cd-dock-item {
+            position: relative;
+            height: 360px;
+            width: 72px;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: grayscale(100%) opacity(0.6);
+            border: 1px solid rgba(255, 204, 253, 0.25);
+            background: rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        /* Dim non-hovered items when hovering the container */
+        .cd-dock-container:hover .cd-dock-item {
+            filter: grayscale(100%) opacity(0.4);
+            width: 60px;
+        }
+
+        /* Active / Hovered Card - Scales up, full color, expands wide */
+        .cd-dock-container .cd-dock-item:hover {
+            filter: grayscale(0%) opacity(1);
+            width: 320px;
+            transform: scale(1.08) translateY(-8px);
+            z-index: 30;
+            border-color: rgba(255, 204, 253, 0.8);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 204, 253, 0.3);
+        }
+
+        .cd-dock-item .item-overlay {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .cd-dock-item:hover .item-overlay {
+            opacity: 1;
+        }
+
+        /* Custom Scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-scrollbar-style: none;
+            scrollbar-width: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.15);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 204, 253, 0.6);
+            border-radius: 9999px;
+        }
+
+        /* Stroke-by-Stroke Cursive Gooey Handwriting Animation */
+        .handwriting-stroke {
+            fill: none;
+            stroke: #ffccfd;
+            stroke-width: 15px;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 1;
+            stroke-dashoffset: 1;
+            animation: drawSequentialStroke 6s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+        }
+
+        /* Sequential Delays for Letter-by-Letter Writing */
+        .stroke-k1  { animation-delay: 0.1s; }
+        .stroke-k2  { animation-delay: 0.7s; }
+        .stroke-i   { animation-delay: 1.3s; }
+        .stroke-m1  { animation-delay: 1.8s; }
+        .stroke-m2  { animation-delay: 2.5s; }
+        .stroke-y   { animation-delay: 3.2s; }
+        .stroke-dot { animation-delay: 4.1s; }
+
+        @keyframes drawSequentialStroke {
+            0%, 5% {
+                stroke-dashoffset: 1;
+            }
+            30%, 85% {
+                stroke-dashoffset: 0;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .gooey-droplet {
+            fill: #ffccfd;
+            transform-origin: center;
+        }
+
+        .drop-1 { animation: flowGooey1 4s ease-in-out infinite alternate; }
+        .drop-2 { animation: flowGooey2 4.5s ease-in-out infinite alternate; }
+        .drop-3 { animation: flowGooey3 3.8s ease-in-out infinite alternate; }
+        .drop-4 { animation: flowGooey4 4.2s ease-in-out infinite alternate; }
+
+        @keyframes flowGooey1 {
+            0% { transform: translate(0, 0) scale(0.8); }
+            50% { transform: translate(45px, -20px) scale(1.4); }
+            100% { transform: translate(80px, 10px) scale(0.9); }
+        }
+
+        @keyframes flowGooey2 {
+            0% { transform: translate(0, 0) scale(1.2); }
+            50% { transform: translate(-30px, 25px) scale(0.7); }
+            100% { transform: translate(20px, -15px) scale(1.1); }
+        }
+
+        @keyframes flowGooey3 {
+            0% { transform: translate(0, 0) scale(0.9); }
+            50% { transform: translate(35px, 20px) scale(1.3); }
+            100% { transform: translate(-25px, -10px) scale(0.8); }
+        }
+
+        @keyframes flowGooey4 {
+            0% { transform: translate(0, 0) scale(1.1); }
+            50% { transform: translate(-40px, -25px) scale(0.8); }
+            100% { transform: translate(15px, 30px) scale(1.2); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-[#ffccfd] selection:bg-[#ffccfd] selection:text-[#00663a] antialiased">
+
+    <!-- SVG Gooey Filter Definition -->
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none;" aria-hidden="true">
+        <defs>
+            <filter id="gooey-title-filter" x="-30%" y="-30%" width="160%" height="160%">
+                <!-- Gooeyness 50: stdDeviation tuned to 8 for balanced fluid blur -->
+                <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+                <!-- Sharpness 50: Matrix threshold tuned (22, -8) for crisp liquid edges while forcing strokes to merge -->
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -8" result="gooey" />
+                <feComposite in="SourceGraphic" in2="gooey" operator="atop" />
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- PAGE 1: HOME SECTION VIEW -->
+    <div id="page-home" class="page-view min-h-screen flex flex-col items-center justify-center relative px-6 text-center">
+        <!-- Center Hover/Click Trigger Zone -->
+        <div id="homeTriggerZone" class="relative group my-auto py-12 px-8 trigger-zone" onclick="toggleHomeDropdown(event)">
+            
+            <!-- Frameless Title with Gooey Writing Animation -->
+            <div class="inline-flex flex-col items-center justify-center p-4 cursor-pointer transition-transform duration-500 group-hover:scale-105">
+                <div class="relative inline-block pb-2 pr-2 sm:pr-4">
+                    
+                    <!-- Gooey SVG Sequential Stroke Writing Container -->
+                    <div class="gooey-container relative flex items-center justify-center">
+                        <svg class="w-[300px] sm:w-[480px] md:w-[620px] h-auto overflow-visible select-none drop-shadow-md" viewBox="0 0 460 210" shape-rendering="geometricPrecision">
+                            <!-- Group with SVG Gooey Filter -->
+                            <g filter="url(#gooey-title-filter)">
+                                <!-- Stroke 1: K stem -->
+                                <path pathLength="1" class="handwriting-stroke stroke-k1" d="M 60 40 C 55 75 52 115 50 145 C 48 152 55 155 60 148" />
+                                
+                                <!-- Stroke 2: K arms -->
+                                <path pathLength="1" class="handwriting-stroke stroke-k2" d="M 115 55 C 85 80 68 95 52 98 C 75 102 105 125 125 148" />
+                                
+                                <!-- Stroke 3: i body -->
+                                <path pathLength="1" class="handwriting-stroke stroke-i" d="M 125 148 C 145 110 160 105 168 125 C 172 135 175 142 185 145" />
+                                
+                                <!-- Stroke 4: m (first arch) -->
+                                <path pathLength="1" class="handwriting-stroke stroke-m1" d="M 185 145 C 192 120 208 100 218 105 C 228 110 218 135 222 145 C 230 120 245 100 255 105 C 265 110 252 138 260 145" />
+                                
+                                <!-- Stroke 5: m (second arch) -->
+                                <path pathLength="1" class="handwriting-stroke stroke-m2" d="M 260 145 C 268 120 284 100 294 105 C 304 110 294 135 298 145 C 306 120 321 100 331 105 C 341 110 328 138 336 145" />
+                                
+                                <!-- Stroke 6: y loop & tail flourish -->
+                                <path pathLength="1" class="handwriting-stroke stroke-y" d="M 336 145 C 345 120 360 105 370 108 C 380 112 368 138 362 152 C 352 175 342 192 332 195 C 322 198 318 185 330 172 C 350 152 388 128 410 125" />
+                                
+                                <!-- Stroke 7: i dot -->
+                                <path pathLength="1" class="handwriting-stroke stroke-dot" d="M 166 82 C 166 79 169 79 169 82 C 169 85 166 85 166 82 Z" />
+
+                                <!-- Fluid Organic Metaball Droplets -->
+                                <circle cx="75" cy="115" r="14" class="gooey-droplet drop-1" />
+                                <circle cx="185" cy="70" r="16" class="gooey-droplet drop-2" />
+                                <circle cx="305" cy="125" r="13" class="gooey-droplet drop-3" />
+                                <circle cx="410" cy="85" r="15" class="gooey-droplet drop-4" />
+                            </g>
+                        </svg>
+                    </div>
+
+                    <span class="absolute bottom-2 right-1 sm:right-2 text-lg sm:text-2xl md:text-3xl font-sans font-normal lowercase tracking-wider text-[#ffccfd]/85 group-hover:text-[#ffccfd] transition-colors">
+                        portfolio
+                    </span>
+                </div>
+                
+                <!-- Hover/Click Hint Indicator -->
+                <div class="flex items-center justify-center gap-2 mt-2 text-xs font-mono text-[#ffccfd]/75 group-hover:text-[#ffccfd] transition-colors">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#ffccfd] group-hover:animate-ping"></span>
+                    <i class="chevron-icon fa-solid fa-chevron-down text-[10px] group-hover:rotate-180 transition-transform duration-300"></i>
+                </div>
+            </div>
+
+            <!-- Dropdown Menu -->
+            <div class="dropdown-menu absolute top-full left-1/2 -translate-x-1/2 pt-4 w-72 opacity-0 invisible -translate-y-2 z-50">
+                <div class="glass-nav rounded-2xl p-3 shadow-2xl space-y-1 text-center border border-[#ffccfd]/40">
+                    <a href="#about" onclick="navigateTo('about', event)" class="block py-3 px-6 rounded-xl text-xs font-medium uppercase tracking-wider text-[#ffccfd] hover:bg-[#ffccfd] hover:text-[#00663a] transition-all duration-300 flex items-center justify-between group/item">
+                        <span>About Me</span>
+                        <i class="fa-solid fa-arrow-right text-xs opacity-0 group-hover/item:opacity-100 -translate-x-2 group-hover/item:translate-x-0 transition-all"></i>
+                    </a>
+                    <a href="#work" onclick="navigateTo('work', event)" class="block py-3 px-6 rounded-xl text-xs font-medium uppercase tracking-wider text-[#ffccfd] hover:bg-[#ffccfd] hover:text-[#00663a] transition-all duration-300 flex items-center justify-between group/item">
+                        <span>Work</span>
+                        <i class="fa-solid fa-arrow-right text-xs opacity-0 group-hover/item:opacity-100 -translate-x-2 group-hover/item:translate-x-0 transition-all"></i>
+                    </a>
+                    <a href="#contact" onclick="navigateTo('contact', event)" class="block py-3 px-6 rounded-xl text-xs font-medium uppercase tracking-wider text-[#ffccfd] hover:bg-[#ffccfd] hover:text-[#00663a] transition-all duration-300 flex items-center justify-between group/item">
+                        <span>Contact</span>
+                        <i class="fa-solid fa-arrow-right text-xs opacity-0 group-hover/item:opacity-100 -translate-x-2 group-hover/item:translate-x-0 transition-all"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: ABOUT ME DEDICATED LINKED PAGE -->
+    <div id="page-about" class="page-view hidden min-h-screen pt-28 pb-24 px-6 sm:px-12 max-w-5xl mx-auto flex flex-col justify-center">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-12 pb-4 border-b border-[#ffccfd]/20 gap-4">
+            <div>
+                <!-- Kimmy Top-Left Logo (Clickable to Home with Gooey Animation) -->
+                <a href="#home" onclick="navigateTo('home', event)" class="inline-block group mb-1 hover:opacity-80 transition-opacity" title="Back to Home">
+                    <svg class="w-28 sm:w-32 h-auto overflow-visible select-none drop-shadow" viewBox="0 0 460 210">
+                        <g filter="url(#gooey-title-filter)">
+                            <path pathLength="1" class="handwriting-stroke stroke-k1" d="M 60 40 C 55 75 52 115 50 145 C 48 152 55 155 60 148" />
+                            <path pathLength="1" class="handwriting-stroke stroke-k2" d="M 115 55 C 85 80 68 95 52 98 C 75 102 105 125 125 148" />
+                            <path pathLength="1" class="handwriting-stroke stroke-i" d="M 125 148 C 145 110 160 105 168 125 C 172 135 175 142 185 145" />
+                            <path pathLength="1" class="handwriting-stroke stroke-m1" d="M 185 145 C 192 120 208 100 218 105 C 228 110 218 135 222 145 C 230 120 245 100 255 105 C 265 110 252 138 260 145" />
+                            <path pathLength="1" class="handwriting-stroke stroke-m2" d="M 260 145 C 268 120 284 100 294 105 C 304 110 294 135 298 145 C 306 120 321 100 331 105 C 341 110 328 138 336 145" />
+                            <path pathLength="1" class="handwriting-stroke stroke-y" d="M 336 145 C 345 120 360 105 370 108 C 380 112 368 138 362 152 C 352 175 342 192 332 195 C 322 198 318 185 330 172 C 350 152 388 128 410 125" />
+                            <path pathLength="1" class="handwriting-stroke stroke-dot" d="M 166 82 C 166 79 169 79 169 82 C 169 85 166 85 166 82 Z" />
+
+                            <!-- Fluid Organic Metaball Droplets -->
+                            <circle cx="75" cy="115" r="14" class="gooey-droplet drop-1" />
+                            <circle cx="185" cy="70" r="16" class="gooey-droplet drop-2" />
+                            <circle cx="305" cy="125" r="13" class="gooey-droplet drop-3" />
+                            <circle cx="410" cy="85" r="15" class="gooey-droplet drop-4" />
+                        </g>
+                    </svg>
+                </a>
+                <h2 class="font-serif text-5xl sm:text-7xl font-light text-[#ffccfd] mt-1">About Me</h2>
+            </div>
+            
+            <!-- Direct Header Navigation Bar -->
+            <div class="flex items-center gap-2 glass-card p-1.5 rounded-full self-start sm:self-auto text-xs font-mono uppercase tracking-wider">
+                <a href="#home" onclick="navigateTo('home', event)" class="px-4 py-2 rounded-full text-[#ffccfd]/80 hover:text-[#ffccfd] hover:bg-[#ffccfd]/10 transition-colors">Home</a>
+                <a href="#about" onclick="navigateTo('about', event)" class="px-4 py-2 rounded-full bg-[#ffccfd] text-[#00663a] font-semibold">About</a>
+                <a href="#work" onclick="navigateTo('work', event)" class="px-4 py-2 rounded-full text-[#ffccfd]/80 hover:text-[#ffccfd] hover:bg-[#ffccfd]/10 transition-colors">Work</a>
+                <a href="#contact" onclick="navigateTo('contact', event)" class="px-4 py-2 rounded-full text-[#ffccfd]/80 hover:text-[#ffccfd] hover:bg-[#ffccfd]/10 transition-colors">Contact</a>
+            </div>
+        </div>
+
+        <div class="space-y-12">
+            
+            <!-- SECTION 1: INTRODUCTION -->
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/70">01 /</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl font-light text-[#ffccfd]">Introduction</h3>
+                </div>
+
+                <div class="glass-card p-6 sm:p-8 rounded-3xl border border-[#ffccfd]/30 flex flex-col md:flex-row items-center gap-8">
+                    <p class="text-sm sm:text-base text-[#ffccfd]/90 font-light leading-relaxed flex-1">
+                        Hello! I'm Kimmy—welcome to my portfolio page! As someone who is passionate about communications, I love finding new ways to express ideas, connect with people, and turn concepts into something tangible. In my free time, I love taking film photos. Check out my work on insta <a href="https://www.instagram.com/oshiyya" target="_blank" class="underline hover:opacity-80 transition-opacity">@oshiyya</a>! Thank you so much! &lt;3
+                    </p>
+                    <div class="flex-shrink-0">
+                        <img src="https://i.postimg.cc/nc22kGvK/4461e3ef-f9b8-4955-9f8c-fba3819bc8d3.jpg" alt="Kimmy" class="w-40 h-40 object-cover rounded-2xl shadow-lg border border-[#ffccfd]/20">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: EXPERIENCE -->
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/70">02 /</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl font-light text-[#ffccfd]">Experience</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-4">
+                    <!-- Role 1 -->
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl border border-[#ffccfd]/30 hover:border-[#ffccfd]/50 transition-all">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                            <div>
+                                <h4 class="text-xl font-medium text-[#ffccfd]">Union Development Officer</h4>
+                                <p class="text-xs font-mono text-[#ffccfd]/80 mt-0.5">Hong Kong Clerical and Professional Employees General Union &bull; Full-time</p>
+                            </div>
+                            <span class="text-xs font-mono px-3 py-1 rounded-full glass-card text-[#ffccfd]/90 border border-[#ffccfd]/20 self-start sm:self-auto">Jul 2025 &ndash; Present</span>
+                        </div>
+                        <ul class="text-xs sm:text-sm text-[#ffccfd]/85 space-y-2 font-light list-disc list-inside">
+                            <li>Served as Deputy Event Coordinator for 6.27 Territory-wide Street Station, leading 60+ volunteers across 5 districts and engaging 500+ members.</li>
+                            <li>Designed high-impact marketing collateral including 35th Anniversary commemorative stamps, discount vouchers, posters, and commemorative booklets.</li>
+                            <li>Produced and edited promotional video content featuring interviews with Legislative Councillors, District Councillors, and union leaders.</li>
+                            <li>Coordinated Annual Dinner for ~400 participants, managing budgeting, vendor negotiation, and print/digital promotional asset creation.</li>
+                            <li>Liaised for Caring Volunteer Group and managed daily member communications and program reporting.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Role 2 -->
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl border border-[#ffccfd]/30 hover:border-[#ffccfd]/50 transition-all">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                            <div>
+                                <h4 class="text-xl font-medium text-[#ffccfd]">Executive Assistant (Internship)</h4>
+                                <p class="text-xs font-mono text-[#ffccfd]/80 mt-0.5">Hospital Authority &bull; Internship</p>
+                            </div>
+                            <span class="text-xs font-mono px-3 py-1 rounded-full glass-card text-[#ffccfd]/90 border border-[#ffccfd]/20 self-start sm:self-auto">Jul 2024 &ndash; Mar 2025</span>
+                        </div>
+                        <ul class="text-xs sm:text-sm text-[#ffccfd]/85 space-y-2 font-light list-disc list-inside">
+                            <li>Produced and edited internal engagement videos and posters for staff distribution.</li>
+                            <li>Created cultural orientation video content to help overseas healthcare professionals adapt to Hong Kong.</li>
+                            <li>Supported event photography and content editing to strengthen campaign outreach assets.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Role 3 -->
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl border border-[#ffccfd]/30 hover:border-[#ffccfd]/50 transition-all">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                            <div>
+                                <h4 class="text-xl font-medium text-[#ffccfd]">Assistant Account Executive (Internship)</h4>
+                                <p class="text-xs font-mono text-[#ffccfd]/80 mt-0.5">Amaz Company Ltd. &bull; Internship</p>
+                            </div>
+                            <span class="text-xs font-mono px-3 py-1 rounded-full glass-card text-[#ffccfd]/90 border border-[#ffccfd]/20 self-start sm:self-auto">Jun 2023 &ndash; Jul 2023</span>
+                        </div>
+                        <ul class="text-xs sm:text-sm text-[#ffccfd]/85 space-y-2 font-light list-disc list-inside">
+                            <li>Supported campaign execution and sales-driven events alongside cross-functional team members.</li>
+                            <li>Assisted senior executives in preparing client proposals and sales presentations to hit targets.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: EDUCATION -->
+            <div class="space-y-6 pt-4">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/70">03 /</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl font-light text-[#ffccfd]">Education</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl border border-[#ffccfd]/30 hover:border-[#ffccfd]/50 transition-all">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-mono text-[#ffccfd]/70">BACHELOR DEGREE</span>
+                            <span class="text-xs font-mono text-[#ffccfd]/80">HKBU</span>
+                        </div>
+                        <h4 class="text-lg font-medium text-[#ffccfd]">Bachelor of Communication (Hons)</h4>
+                        <p class="text-xs text-[#ffccfd]/90 mt-1 font-medium">Hong Kong Baptist University</p>
+                        <p class="text-xs text-[#ffccfd]/70 mt-2 font-light italic">Major in Public Relations and Advertising &bull; Advertising & Branding Concentration</p>
+                    </div>
+
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl border border-[#ffccfd]/30 hover:border-[#ffccfd]/50 transition-all">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-mono text-[#ffccfd]/70">ASSOCIATE DEGREE</span>
+                            <span class="text-xs font-mono text-[#ffccfd]/80">HKU SPACE</span>
+                        </div>
+                        <h4 class="text-lg font-medium text-[#ffccfd]">Associate Degree of Applied Social Sciences</h4>
+                        <p class="text-xs text-[#ffccfd]/90 mt-1 font-medium">HKU SPACE Po Leung Kuk Stanley Ho Community College</p>
+                        <p class="text-xs text-[#ffccfd]/70 mt-2 font-light italic">Concentration in Communication, Public Relations and Journalism</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: SKILLS -->
+            <div class="space-y-6 pt-4">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/70">04 /</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl font-light text-[#ffccfd]">Skills & Languages</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <div class="glass-card p-6 rounded-3xl border border-[#ffccfd]/30">
+                        <h4 class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/80 mb-4 pb-2 border-b border-[#ffccfd]/20">
+                            Core Capabilities
+                        </h4>
+                        <ul class="space-y-2.5 text-xs text-[#ffccfd]">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> PR & Brand Strategy</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Video Shooting & Editing</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Event Coordination & Logistics</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Promotional Material Design</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Member & Community Outreach</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-3xl border border-[#ffccfd]/30">
+                        <h4 class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/80 mb-4 pb-2 border-b border-[#ffccfd]/20">
+                            Software & Tools
+                        </h4>
+                        <ul class="space-y-2.5 text-xs text-[#ffccfd]">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> CapCut</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Adobe Photoshop</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Canva</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Microsoft Office Suite</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Google Analytics</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> AI-assisted development</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-3xl border border-[#ffccfd]/30">
+                        <h4 class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/80 mb-4 pb-2 border-b border-[#ffccfd]/20">
+                            Languages
+                        </h4>
+                        <ul class="space-y-2.5 text-xs text-[#ffccfd]">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Cantonese (Native)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> Mandarin (Native)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[10px] opacity-70"></i> English (Proficient)</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PAGE 3: WORK DEDICATED LINKED PAGE -->
+    <div id="page-work" class="page-view hidden min-h-screen pt-28 pb-24 px-6 sm:px-12 max-w-6xl mx-auto flex flex-col justify-center">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-12 gap-4 pb-4 border-b border-[#ffccfd]/20">
+            <div>
+                <!-- Kimmy Top-Left Logo (Clickable to Home with Gooey Animation) -->
+                <a href="#home" onclick="navigateTo('home', event)" class="inline-block group mb-1 hover:opacity-80 transition-opacity" title="Back to Home">
+                    <svg class="w-28 sm:w-32 h-auto overflow-visible select-none drop-shadow" viewBox="0 0 460 210">
+                        <g filter="url(#gooey-title-filter)">
+                            <path pathLength="1" class="handwriting-stroke stroke-k1" d="M 60 40 C 55 75 52 115 50 145 C 48 152 55 155 60 148" />
+                            <path pathLength="1" class="handwriting-stroke stroke-k2" d="M 115 55 C 85 80 68 95 52 98 C 75 102 105 125 125 148" />
+                            <path pathLength="1" class="handwriting-stroke stroke-i" d="M 125 148 C 145 110 160 105 168 125 C 172 135 175 142 185 145" />
+                            <path pathLength="1" class="handwriting-stroke stroke-m1" d="M 185 145 C 192 120 208 100 218 105 C 228 110 218 135 222 145 C 230 120 245 100 255 105 C 265 110 252 138 260 145" />
+                            <path pathLength="1" class="handwriting-stroke stroke-m2" d="M 260 145 C 268 120 284 100 294 105 C 304 110 294 135 298 145 C 306 120 321 100 331 105 C 341 110 328 138 336 145" />
+                            <path pathLength="1" class="handwriting-stroke stroke-y" d="M 336 145 C 345 120 360 105 370 108 C 380 112 368 138 362 152 C 352 175 342 192 332 195 C 322 198 318 185 330 172 C 350 152 388 128 410 125" />
+                            <path pathLength="1" class="handwriting-stroke stroke-dot" d="M 166 82 C 166 79 169 79 169 82 C 169 85 166 85 166 82 Z" />
+
+                            <!-- Fluid Organic Metaball Droplets -->
+                            <circle cx="75" cy="115" r="14" class="gooey-droplet drop-1" />
+                            <circle cx="185" cy="70" r="16" class="gooey-droplet drop-2" />
+                            <circle cx="305" cy="125" r="13" class="gooey-droplet drop-3" />
+                            <circle cx="410" cy="85" r="15" class="gooey-droplet drop-4" />
+                        </g>
+                    </svg>
+                </a>
+                <h2 class="font-serif text-5xl sm:text-7xl font-light text-[#ffccfd] mt-1">Work</h2>
+            </div>
+            
+            <!-- Direct Header Navigation Bar -->
+            <div class="flex items-center gap-2 glass-card p-1.5 rounded-full self-start sm:self-auto text-xs font-mono uppercase tracking-wider">
+                <a href="#home" onclick="navigateTo('home', event)" class="px-4 py-2 rounded-full text-[#ffccfd]/80 hover:text-[#ffccfd] hover:bg-[#ffccfd]/10 transition-colors">Home</a>
+                <a href="#about" onclick="navigateTo('about', event)" class="px-4 py-2 rounded-full text-[#ffccfd]/80 hover:text-[#ffccfd] hover:bg-[#ffccfd]/10 transition-colors">About</a>
+                <a href="#work" onclick="navigateTo('work', event)" class="px-4 py-2 rounded-full bg-[#ffccfd] text-[#00663a] font-semibold">Work</a>
+                <a href="#contact" onclick="navigateTo('contact', event)" class="px-4 py-2 rounded-full text-[#ffccfd]/80 hover:text-[#ffccfd] hover:bg-[#ffccfd]/10 transition-colors">Contact</a>
+            </div>
+        </div>
+
+        <div class="space-y-16">
+            
+            <!-- SECTION 1: DESIGN -->
+            <div class="space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/70">01 /</span>
+                        <h3 class="font-serif text-3xl sm:text-4xl font-light text-[#ffccfd]">Design Portfolio</h3>
+                    </div>
+                </div>
+
+                <!-- Interactive CD Jewel Case Accordion Dock -->
+                <div class="w-full overflow-x-auto no-scrollbar glass-card rounded-3xl border border-[#ffccfd]/30 p-2 sm:p-6">
+                    <div class="cd-dock-container min-w-max mx-auto">
+                        
+                        <!-- Poster 1 -->
+                        <div onclick="openModal('designPoster1')" class="cd-dock-item group">
+                            <img src="https://i.postimg.cc/FFB52GZS/35zhou-nianlogo-she-ji-bi-sai.jpg" alt="35週年Logo設計比賽海報" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Anniversary & Branding</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">35週年Logo設計比賽海報</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Click for detail</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Poster 2 -->
+                        <div onclick="openModal('designPoster2')" class="cd-dock-item group">
+                            <img src="https://i.postimg.cc/2jKRPTwv/ru-hui-xu-hui-jiang-shangposter.jpg" alt="文專35周年入會及續會宣傳海報" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Membership Campaign</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">文專35周年入會及續會宣傳海報</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Click for detail</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Poster 3 -->
+                        <div onclick="openModal('designPoster3')" class="cd-dock-item group">
+                            <img src="https://i.postimg.cc/dQxPznBG/jiao-zong-mian-fei-ling-qu-ru-ge-li-quan-hai-bao.jpg" alt="教總免費領取乳鴿券海報" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Member Welfare</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">教總免費領取乳鴿券海報</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Click for detail</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Poster 4 -->
+                        <div onclick="openModal('designPoster4')" class="cd-dock-item group">
+                            <img src="https://i.postimg.cc/sfNdtKc7/zhu-ao-jiao-liu-tuan-poster.jpg" alt="珠澳交流團海報" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Cultural Exchange</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">珠澳交流團海報</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Click for detail</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Poster 5 -->
+                        <div onclick="openModal('designPoster5')" class="cd-dock-item group">
+                            <img src="https://i.postimg.cc/Px6sfMkT/yun-dong-hui-tong-xin-2025er-tong-hui-hua-bi-saiposter.jpg" alt="童心2025 兒童繪畫比賽海報" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Community & Contest</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">童心2025 兒童繪畫比賽海報</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Click for detail</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Poster 6 -->
+                        <div onclick="openModal('designPoster6')" class="cd-dock-item group">
+                            <img src="https://i.postimg.cc/PrQcd4b0/SKM-C451i26072112400-page-0001.jpg" alt="文專總會35周年紀念郵票設計" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Anniversary & Branding</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">文專總會35周年紀念郵票設計</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Click for detail</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Poster 7 -->
+                        <div onclick="openModal('designPoster7')" class="cd-dock-item group">
+                            <img src="https://i.postimg.cc/SNh3059D/wei-ming-ming-she-ji-2.jpg" alt="文專總會35周年入會禮券" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Promotional & Branding</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">文專總會35周年入會禮券</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Click for detail</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: VIDEO CREATION -->
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/70">02 /</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl font-light text-[#ffccfd]">Video Creation</h3>
+                </div>
+
+                <!-- Interactive CD Jewel Case Accordion Dock for Videos -->
+                <div class="w-full overflow-x-auto no-scrollbar glass-card rounded-3xl border border-[#ffccfd]/30 p-2 sm:p-6 relative">
+                    <div class="absolute top-4 left-6 text-[10px] font-mono uppercase tracking-widest text-[#ffccfd]/60">
+                        Please watch on YouTube
+                    </div>
+                    <div class="cd-dock-container min-w-max mx-auto mt-6">
+                        
+                        <!-- Video 1 -->
+                        <div onclick="openVideo('n5NF5A4Tsco', 'Video Project 01')" class="cd-dock-item group">
+                            <img src="https://img.youtube.com/vi/n5NF5A4Tsco/hqdefault.jpg" alt="Video Project 1" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Video Production</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">Video Project 01</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Play Video</span>
+                                    <i class="fa-solid fa-play text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video 2 -->
+                        <div onclick="openVideo('uIDhZsGYndg', 'Video Project 02')" class="cd-dock-item group">
+                            <img src="https://img.youtube.com/vi/uIDhZsGYndg/hqdefault.jpg" alt="Video Project 2" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Video Production</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">Video Project 02</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Play Video</span>
+                                    <i class="fa-solid fa-play text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video 3 -->
+                        <div onclick="openVideo('qfaF96cB4Kc', 'Video Project 03')" class="cd-dock-item group">
+                            <img src="https://img.youtube.com/vi/qfaF96cB4Kc/hqdefault.jpg" alt="Video Project 3" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Video Production</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">Video Project 03</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Play Video</span>
+                                    <i class="fa-solid fa-play text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video 4 -->
+                        <div onclick="openVideo('vYlHZTashsY', 'Video Project 04')" class="cd-dock-item group">
+                            <img src="https://img.youtube.com/vi/vYlHZTashsY/hqdefault.jpg" alt="Video Project 4" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Video Production</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">Video Project 04</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Play Video</span>
+                                    <i class="fa-solid fa-play text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video 5 -->
+                        <div onclick="openVideo('6XlzGDs_rHk', 'Video Project 05')" class="cd-dock-item group">
+                            <img src="https://img.youtube.com/vi/6XlzGDs_rHk/hqdefault.jpg" alt="Video Project 5" class="w-full h-full object-cover object-center">
+                            <div class="item-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-5 flex flex-col justify-end text-left">
+                                <span class="text-[10px] font-mono uppercase tracking-wider text-[#ffccfd]/80">Video Production</span>
+                                <h4 class="font-serif text-lg font-light text-[#ffccfd] leading-snug mt-0.5">Video Project 05</h4>
+                                <div class="mt-3 flex items-center justify-between text-xs text-[#ffccfd]/90 font-mono pt-2 border-t border-[#ffccfd]/30">
+                                    <span>Play Video</span>
+                                    <i class="fa-solid fa-play text-[10px]"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: OTHERS -->
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono uppercase tracking-widest text-[#ffccfd]/70">03 /</span>
+                    <h3 class="font-serif text-3xl sm:text-4xl font-light text-[#ffccfd]">Others</h3>
+                </div>
+
+                <div class="glass-card p-4 sm:p-8 rounded-3xl border border-[#ffccfd]/30 flex flex-col items-center">
+                    <div class="relative group cursor-pointer" onclick="openModal('otherWorkDetail')">
+                        <img src="https://i.postimg.cc/7YtHnXrh/ying-mu-jie-tu-2026-07-29-xia-wu8-21-41.png" onerror="this.src='https://placehold.co/800x420/004b2b/ffccfd?text=Kimmy+Portfolio+Preview'" alt="Kimmy Portfolio Screenshot" class="w-full max-w-2xl rounded-2xl shadow-xl group-hover:scale-[1.02] transition-transform duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 rounded-2xl">
+                            <span class="text-[#ffccfd] font-mono text-xs uppercase tracking-widest bg-black/40 px-4 py-2 rounded-full">Click for details</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+<!-- Other Work Modal -->
+    <div id="otherWorkDetail" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeModal('otherWorkDetail')">
+        <div class="glass-card p-6 rounded-3xl max-w-lg w-full border border-[#ffccfd]/40 relative flex flex-col items-center text-center">
+            <button onclick="closeModal('otherWorkDetail')" class="absolute top-4 right-4 text-[#ffccfd] hover:text-[#00663a] w-8 h-8 rounded-full glass-card flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-serif text-2xl font-light text-[#ffccfd] mb-4">Project Details</h3>
+            <p class="text-[#ffccfd]/90 font-mono text-sm leading-relaxed">
+                This website was created using AI software and GitHub.
+            </p>
+        </div>
+    </div>
+
+    <!-- PAGE 4: CONTACT DEDICATED LINKED PAGE -->
+    <div id="page-contact" class="page-view hidden min-h-screen pt-28 pb-24 px-6 sm:px-12 max-w-4xl mx-auto flex flex-col justify-center">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-4 border-b border-[#ffccfd]/20 gap-4">
+            <div>
+                <!-- Kimmy Top-Left Logo (Clickable to Home with Gooey Animation) -->
+                <a href="#home" onclick="navigateTo('home', event)" class="inline-block group mb-1 hover:opacity-80 transition-opacity" title="Back to Home">
+                    <svg class="w-28 sm:w-32 h-auto overflow-visible select-none drop-shadow" viewBox="0 0 460 210">
+                        <g filter="url(#gooey-title-filter)">
+                            <path pathLength="1" class="handwriting-stroke stroke-k1" d="M 60 40 C 55 75 52 115 50 145 C 48 152 55 155 60 148" />
+                            <path pathLength="1" class="handwriting-stroke stroke-k2" d="M 115 55 C 85 80 68 95 52 98 C 75 102 105 125 125 148" />
+                            <path pathLength="1" class="handwriting-stroke stroke-i" d="M 125 148 C 145 110 160 105 168 125 C 172 135 175 142 185 145" />
+                            <path pathLength="1" class="handwriting-stroke stroke-m1" d="M 185 145 C 192 120 208 100 218 105 C 228 110 218 135 222 145 C 230 120 245 100 255 105 C 265 110 252 138 260 145" />
+                            <path pathLength="1" class="handwriting-stroke stroke-m2" d="M 260 145 C 268 120 284 100 294 105 C 304 110 294 135 298 145 C 306 120 321 100 331 105 C 341 110 328 138 336 145" />
+                            <path pathLength="1" class="handwriting-stroke stroke-y" d="M 336 145 C 345 120 360 105 370 108 C 380 112 368 138 362 152 C 352 175 342 192 332 195 C 322 198 318 185 330 172 C 350 152 388 128 410 125" />
+                            <path pathLength="1" class="handwriting-stroke stroke-dot" d="M 166 82 C 166 79 169 79 169 82 C 169 85 166 85 166 82 Z" />
+
+                            <!-- Fluid Organic Metaball Droplets -->
+                            <circle cx="75" cy="115" r="14" class="gooey-droplet drop-1" />
+                            <circle cx="185" cy="70" r="16" class="gooey-droplet drop-2" />
+                            <circle cx="305" cy="125" r="13" class="gooey-droplet drop-3" />
+                            <circle cx="410" cy="85" r="15" class="gooey-droplet drop-4" />
+                        </g>
+                    </svg>
+                </a>
+                <h2 class="font-serif text-5xl sm:text-7xl font-light text-[#ffccfd] mt-1">Contact</h2>
+            </div>
+            
+            <!-- Direct Header Navigation Bar -->
+            <div class="flex items-center gap-2 glass-card p-1.5 rounded-full self-start sm:self-auto text-xs font-mono uppercase tracking-wider">
+                <a href="#home" onclick="navigateTo('home', event)" class="px-4 py-2 rounded-full text-[#ffccfd]/80 hover:text-[#ffccfd] hover:bg-[#ffccfd]/10 transition-colors">Home</a>
+                <a href="#about" onclick="navigateTo('about', event)" class="px-4 py-2 rounded-full text-[#ffccfd]/80 hover:text-[#ffccfd] hover:bg-[#ffccfd]/10 transition-colors">About</a>
+                <a href="#work" onclick="navigateTo('work', event)" class="px-4 py-2 rounded-full text-[#ffccfd]/80 hover:text-[#ffccfd] hover:bg-[#ffccfd]/10 transition-colors">Work</a>
+                <a href="#contact" onclick="navigateTo('contact', event)" class="px-4 py-2 rounded-full bg-[#ffccfd] text-[#00663a] font-semibold">Contact</a>
+            </div>
+        </div>
+
+        <div class="text-center space-y-8">
+            <p class="text-xl text-[#ffccfd] max-w-xl mx-auto font-light leading-relaxed">
+                GET IN TOUCH WITH ME!
+            </p>
+
+            <!-- Contact Details -->
+            <div class="space-y-4 text-xl font-mono text-[#ffccfd]/90">
+                <p>Instagram: <a href="https://www.instagram.com/oshiyya" target="_blank" class="hover:underline">@oshiyya</a></p>
+                <p>Email: <a href="mailto:kaiyy0288@gmail.com" class="hover:underline">kaiyy0288@gmail.com</a></p>
+                <p>Phone: (852) 9078 0188</p>
+            </div>
+
+            <!-- Click to Copy Email Button -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="copyEmail('kaiyy0288@gmail.com')" class="glass-card px-8 py-4 rounded-2xl text-sm font-medium text-[#ffccfd] hover:bg-[#ffccfd] hover:text-[#00663a] transition-all shadow-md flex items-center gap-3 group">
+                    <i class="fa-regular fa-envelope text-base"></i>
+                    <span>Copy Email Address</span>
+                    <i class="fa-regular fa-copy text-xs opacity-60 group-hover:opacity-100"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL DIALOGS -->
+
+    <!-- Poster Modals -->
+    <div id="designPoster1" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeModal('designPoster1')">
+        <div class="glass-card p-6 rounded-3xl max-w-2xl w-full border border-[#ffccfd]/40 relative max-h-[90vh] flex flex-col items-center">
+            <button onclick="closeModal('designPoster1')" class="absolute top-4 right-4 text-[#ffccfd] hover:text-[#00663a] w-8 h-8 rounded-full glass-card flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span class="text-xs font-mono text-[#ffccfd]/70 uppercase tracking-widest mb-1">Anniversary & Branding &bull; Poster 01</span>
+            <h3 class="font-serif text-2xl font-light text-[#ffccfd] mb-4 text-center">35週年Logo設計比賽海報</h3>
+            <div class="overflow-y-auto w-full flex justify-center rounded-2xl bg-black/20 p-2">
+                <img src="https://i.postimg.cc/FFB52GZS/35zhou-nianlogo-she-ji-bi-sai.jpg" alt="35週年Logo設計比賽海報" class="max-h-[70vh] w-auto object-contain rounded-xl">
+            </div>
+        </div>
+    </div>
+
+    <div id="designPoster2" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeModal('designPoster2')">
+        <div class="glass-card p-6 rounded-3xl max-w-2xl w-full border border-[#ffccfd]/40 relative max-h-[90vh] flex flex-col items-center">
+            <button onclick="closeModal('designPoster2')" class="absolute top-4 right-4 text-[#ffccfd] hover:text-[#00663a] w-8 h-8 rounded-full glass-card flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span class="text-xs font-mono text-[#ffccfd]/70 uppercase tracking-widest mb-1">Membership Campaign &bull; Poster 02</span>
+            <h3 class="font-serif text-2xl font-light text-[#ffccfd] mb-4 text-center">文專35周年入會及續會宣傳海報</h3>
+            <div class="overflow-y-auto w-full flex justify-center rounded-2xl bg-black/20 p-2">
+                <img src="https://i.postimg.cc/2jKRPTwv/ru-hui-xu-hui-jiang-shangposter.jpg" alt="文專35周年入會及續會宣傳海報" class="max-h-[70vh] w-auto object-contain rounded-xl">
+            </div>
+        </div>
+    </div>
+
+    <div id="designPoster3" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeModal('designPoster3')">
+        <div class="glass-card p-6 rounded-3xl max-w-2xl w-full border border-[#ffccfd]/40 relative max-h-[90vh] flex flex-col items-center">
+            <button onclick="closeModal('designPoster3')" class="absolute top-4 right-4 text-[#ffccfd] hover:text-[#00663a] w-8 h-8 rounded-full glass-card flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span class="text-xs font-mono text-[#ffccfd]/70 uppercase tracking-widest mb-1">Member Welfare &bull; Poster 03</span>
+            <h3 class="font-serif text-2xl font-light text-[#ffccfd] mb-4 text-center">教總免費領取乳鴿券海報</h3>
+            <div class="overflow-y-auto w-full flex justify-center rounded-2xl bg-black/20 p-2">
+                <img src="https://i.postimg.cc/dQxPznBG/jiao-zong-mian-fei-ling-qu-ru-ge-li-quan-hai-bao.jpg" alt="教總免費領取乳鴿券海報" class="max-h-[70vh] w-auto object-contain rounded-xl">
+            </div>
+        </div>
+    </div>
+
+    <div id="designPoster4" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeModal('designPoster4')">
+        <div class="glass-card p-6 rounded-3xl max-w-2xl w-full border border-[#ffccfd]/40 relative max-h-[90vh] flex flex-col items-center">
+            <button onclick="closeModal('designPoster4')" class="absolute top-4 right-4 text-[#ffccfd] hover:text-[#00663a] w-8 h-8 rounded-full glass-card flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span class="text-xs font-mono text-[#ffccfd]/70 uppercase tracking-widest mb-1">Cultural Exchange &bull; Poster 04</span>
+            <h3 class="font-serif text-2xl font-light text-[#ffccfd] mb-4 text-center">珠澳交流團海報</h3>
+            <div class="overflow-y-auto w-full flex justify-center rounded-2xl bg-black/20 p-2">
+                <img src="https://i.postimg.cc/sfNdtKc7/zhu-ao-jiao-liu-tuan-poster.jpg" alt="珠澳交流團海報" class="max-h-[70vh] w-auto object-contain rounded-xl">
+            </div>
+        </div>
+    </div>
+
+    <div id="designPoster5" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeModal('designPoster5')">
+        <div class="glass-card p-6 rounded-3xl max-w-2xl w-full border border-[#ffccfd]/40 relative max-h-[90vh] flex flex-col items-center">
+            <button onclick="closeModal('designPoster5')" class="absolute top-4 right-4 text-[#ffccfd] hover:text-[#00663a] w-8 h-8 rounded-full glass-card flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span class="text-xs font-mono text-[#ffccfd]/70 uppercase tracking-widest mb-1">Community & Contest &bull; Poster 05</span>
+            <h3 class="font-serif text-2xl font-light text-[#ffccfd] mb-4 text-center">童心2025 兒童繪畫比賽海報</h3>
+            <div class="overflow-y-auto w-full flex justify-center rounded-2xl bg-black/20 p-2">
+                <img src="https://i.postimg.cc/Px6sfMkT/yun-dong-hui-tong-xin-2025er-tong-hui-hua-bi-saiposter.jpg" alt="童心2025 兒童繪畫比賽海報" class="max-h-[70vh] w-auto object-contain rounded-xl">
+            </div>
+        </div>
+    </div>
+
+    <div id="designPoster6" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeModal('designPoster6')">
+        <div class="glass-card p-6 rounded-3xl max-w-2xl w-full border border-[#ffccfd]/40 relative max-h-[90vh] flex flex-col items-center">
+            <button onclick="closeModal('designPoster6')" class="absolute top-4 right-4 text-[#ffccfd] hover:text-[#00663a] w-8 h-8 rounded-full glass-card flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span class="text-xs font-mono text-[#ffccfd]/70 uppercase tracking-widest mb-1">Anniversary & Branding &bull; Poster 06</span>
+            <h3 class="font-serif text-2xl font-light text-[#ffccfd] mb-4 text-center">文專總會35周年紀念郵票設計</h3>
+            <div class="overflow-y-auto w-full flex justify-center rounded-2xl bg-black/20 p-2">
+                <img src="https://i.postimg.cc/PrQcd4b0/SKM-C451i26072112400-page-0001.jpg" alt="文專總會35周年紀念郵票設計" class="max-h-[70vh] w-auto object-contain rounded-xl">
+            </div>
+        </div>
+    </div>
+
+    <div id="designPoster7" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeModal('designPoster7')">
+        <div class="glass-card p-6 rounded-3xl max-w-2xl w-full border border-[#ffccfd]/40 relative max-h-[90vh] flex flex-col items-center">
+            <button onclick="closeModal('designPoster7')" class="absolute top-4 right-4 text-[#ffccfd] hover:text-[#00663a] w-8 h-8 rounded-full glass-card flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span class="text-xs font-mono text-[#ffccfd]/70 uppercase tracking-widest mb-1">Promotional & Branding &bull; Poster 07</span>
+            <h3 class="font-serif text-2xl font-light text-[#ffccfd] mb-4 text-center">文專總會35周年入會禮券</h3>
+            <div class="overflow-y-auto w-full flex justify-center rounded-2xl bg-black/20 p-2">
+                <img src="https://i.postimg.cc/SNh3059D/wei-ming-ming-she-ji-2.jpg" alt="文專總會35周年入會禮券" class="max-h-[70vh] w-auto object-contain rounded-xl">
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300" onclick="if(event.target===this) closeVideo()">
+        <div class="glass-card p-4 sm:p-6 rounded-3xl max-w-4xl w-full border border-[#ffccfd]/40 relative flex flex-col items-center shadow-2xl">
+            <button onclick="closeVideo()" class="absolute -top-12 right-0 sm:top-4 sm:right-4 text-[#ffccfd] hover:text-[#00663a] w-8 h-8 rounded-full glass-card flex items-center justify-center z-10 transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span class="text-xs font-mono text-[#ffccfd]/70 uppercase tracking-widest mb-1">Video Production</span>
+            <h3 id="videoModalTitle" class="font-serif text-2xl font-light text-[#ffccfd] mb-4 text-center">Video Title</h3>
+            <div class="w-full aspect-video rounded-2xl overflow-hidden bg-black/40 relative shadow-inner border border-[#ffccfd]/20">
+                <iframe id="videoModalPlayer" class="absolute inset-0 w-full h-full border-0" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 glass-card border border-[#ffccfd]/40 px-6 py-3 rounded-full text-xs font-mono text-[#ffccfd] flex items-center gap-3 shadow-xl transition-all duration-300 translate-y-20 opacity-0 z-50">
+        <i class="fa-solid fa-circle-check text-[#ffccfd]"></i>
+        <span>Email address copied to clipboard!</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="py-8 px-6 text-center text-xs font-mono text-[#ffccfd]/70 border-t border-[#ffccfd]/20">
+        &copy; 2026 KIMMY. ALL RIGHTS RESERVED.
+    </footer>
+
+    <!-- Router & Interaction Scripts -->
+    <script>
+        // Toggle Home Dropdown Menu on Click / Tap
+        function toggleHomeDropdown(e) {
+            // Prevent event from bubbling up or closing immediately when clicking inner links
+            if (e.target.closest('a')) return;
+            
+            const triggerZone = document.getElementById('homeTriggerZone');
+            if (triggerZone) {
+                triggerZone.classList.toggle('is-open');
+            }
+        }
+
+        // Close Home Dropdown Menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const triggerZone = document.getElementById('homeTriggerZone');
+            if (triggerZone && !triggerZone.contains(e.target)) {
+                triggerZone.classList.remove('is-open');
+            }
+        });
+
+        // Dedicated, smooth page transition handler
+        function navigateTo(pageId, e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            // Close dropdown upon navigation
+            const triggerZone = document.getElementById('homeTriggerZone');
+            if (triggerZone) {
+                triggerZone.classList.remove('is-open');
+            }
+
+            if (window.location.hash !== '#' + pageId) {
+                history.pushState(null, null, '#' + pageId);
+            }
+
+            renderPage(pageId);
+        }
+
+        function renderPage(pageId) {
+            const targetId = pageId || window.location.hash.replace('#', '') || 'home';
+            const pages = document.querySelectorAll('.page-view');
+            
+            pages.forEach(p => {
+                p.classList.add('hidden');
+            });
+
+            const targetPage = document.getElementById('page-' + targetId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                document.getElementById('page-home').classList.remove('hidden');
+            }
+        }
+
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash.replace('#', '') || 'home';
+            renderPage(hash);
+        });
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.replace('#', '') || 'home';
+            renderPage(hash);
+        });
+
+        // Copy email function
+        function copyEmail(emailText) {
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = emailText;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            showToast("Email address copied to clipboard!");
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.querySelector('span').innerText = message;
+            toast.classList.remove("translate-y-20", "opacity-0");
+            setTimeout(() => {
+                toast.classList.add("translate-y-20", "opacity-0");
+            }, 3000);
+        }
+
+        // Modal Controls
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove("opacity-0", "pointer-events-none");
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.add("opacity-0", "pointer-events-none");
+        }
+
+        // Dedicated Video Modal Controls (handles iframe src for autoplay/stop)
+        function openVideo(videoId, title) {
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('videoModalPlayer');
+            const titleEl = document.getElementById('videoModalTitle');
+            
+            titleEl.innerText = title;
+            // Add autoplay parameter so video starts when opened
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            
+            modal.classList.remove("opacity-0", "pointer-events-none");
+        }
+
+        function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('videoModalPlayer');
+            
+            modal.classList.add("opacity-0", "pointer-events-none");
+            
+            // Clear iframe src after transition to stop audio playing in the background
+            setTimeout(() => {
+                player.src = "";
+            }, 300);
+        }
+    </script>
+</body>
+</html>
