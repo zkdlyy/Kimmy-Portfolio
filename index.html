@@ -78,11 +78,18 @@
             transform-origin: top center;
         }
 
+        /* Active / Hover state for dropdown menu */
         .trigger-zone:hover .dropdown-menu,
+        .trigger-zone.is-open .dropdown-menu,
         .dropdown-menu:hover {
             opacity: 1;
             visibility: visible;
             transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        /* Chevron rotation when dropdown is open */
+        .trigger-zone.is-open .chevron-icon {
+            transform: rotate(180deg);
         }
 
         /* Smooth page fade transition */
@@ -244,8 +251,8 @@
 
     <!-- PAGE 1: HOME SECTION VIEW -->
     <div id="page-home" class="page-view min-h-screen flex flex-col items-center justify-center relative px-6 text-center">
-        <!-- Center Hover Trigger Zone -->
-        <div class="relative group my-auto py-12 px-8 trigger-zone">
+        <!-- Center Hover/Click Trigger Zone -->
+        <div id="homeTriggerZone" class="relative group my-auto py-12 px-8 trigger-zone" onclick="toggleHomeDropdown(event)">
             
             <!-- Frameless Title with Gooey Writing Animation -->
             <div class="inline-flex flex-col items-center justify-center p-4 cursor-pointer transition-transform duration-500 group-hover:scale-105">
@@ -253,7 +260,7 @@
                     
                     <!-- Gooey SVG Sequential Stroke Writing Container -->
                     <div class="gooey-container relative flex items-center justify-center">
-                        <svg class="w-[300px] sm:w-[480px] md:w-[620px] h-auto overflow-visible select-none drop-shadow-md" viewBox="0 0 460 210">
+                        <svg class="w-[300px] sm:w-[480px] md:w-[620px] h-auto overflow-visible select-none drop-shadow-md" viewBox="0 0 460 210" shape-rendering="geometricPrecision">
                             <!-- Group with SVG Gooey Filter -->
                             <g filter="url(#gooey-title-filter)">
                                 <!-- Stroke 1: K stem -->
@@ -291,10 +298,10 @@
                     </span>
                 </div>
                 
-                <!-- Hover Hint Indicator -->
+                <!-- Hover/Click Hint Indicator -->
                 <div class="flex items-center justify-center gap-2 mt-2 text-xs font-mono text-[#ffccfd]/75 group-hover:text-[#ffccfd] transition-colors">
                     <span class="w-1.5 h-1.5 rounded-full bg-[#ffccfd] group-hover:animate-ping"></span>
-                    <i class="fa-solid fa-chevron-down text-[10px] group-hover:rotate-180 transition-transform duration-300"></i>
+                    <i class="chevron-icon fa-solid fa-chevron-down text-[10px] group-hover:rotate-180 transition-transform duration-300"></i>
                 </div>
             </div>
 
@@ -960,12 +967,38 @@
 
     <!-- Router & Interaction Scripts -->
     <script>
+        // Toggle Home Dropdown Menu on Click / Tap
+        function toggleHomeDropdown(e) {
+            // Prevent event from bubbling up or closing immediately when clicking inner links
+            if (e.target.closest('a')) return;
+            
+            const triggerZone = document.getElementById('homeTriggerZone');
+            if (triggerZone) {
+                triggerZone.classList.toggle('is-open');
+            }
+        }
+
+        // Close Home Dropdown Menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const triggerZone = document.getElementById('homeTriggerZone');
+            if (triggerZone && !triggerZone.contains(e.target)) {
+                triggerZone.classList.remove('is-open');
+            }
+        });
+
         // Dedicated, smooth page transition handler
         function navigateTo(pageId, e) {
             if (e) {
                 e.preventDefault();
+                e.stopPropagation();
             }
             
+            // Close dropdown upon navigation
+            const triggerZone = document.getElementById('homeTriggerZone');
+            if (triggerZone) {
+                triggerZone.classList.remove('is-open');
+            }
+
             if (window.location.hash !== '#' + pageId) {
                 history.pushState(null, null, '#' + pageId);
             }
